@@ -20,8 +20,20 @@ export type ResearchResult = {
   latexCompiler?: string | null;
 };
 
+const PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_RESEARCHMIND_API_URL?.replace(/\/$/, "");
+
+function getResearchEndpoint(): string {
+  // In production (Vercel), call Render API directly to avoid serverless proxy timeouts.
+  if (PUBLIC_BACKEND_URL) {
+    return `${PUBLIC_BACKEND_URL}/research`;
+  }
+
+  // Local fallback uses Next.js API route proxy.
+  return "/api/research";
+}
+
 export async function fetchResearch(topic: string): Promise<ResearchResult> {
-  const response = await fetch("/api/research", {
+  const response = await fetch(getResearchEndpoint(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -83,13 +83,13 @@ function ProcessingContent() {
     <div className="min-h-screen bg-background">
       <AnimatedBackground />
       <Navbar />
-      <main className="mx-auto flex w-full max-w-[1000px] flex-col gap-8 px-4 pt-16 pb-10 md:px-6">
+      <main className="mx-auto flex w-full max-w-250 flex-col gap-8 px-4 pt-16 pb-10 md:px-6">
         <Reveal>
           <TiltPanel className="p-6 md:p-8">
             <section>
               <p className="text-sm text-muted-foreground">Topic</p>
               <motion.h1
-                className="mt-2 font-[family-name:var(--font-heading)] text-[32px] leading-tight text-foreground md:text-[42px]"
+                className="mt-2 font-(family-name:--font-heading) text-[32px] leading-tight text-foreground md:text-[42px]"
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55 }}

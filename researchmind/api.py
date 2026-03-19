@@ -68,7 +68,21 @@ def _read_report() -> str:
 
 
 def _output_dir() -> str:
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
+    os.makedirs(path, exist_ok=True)
+    return path
+
+
+def _cors_allow_origins() -> List[str]:
+    configured = os.getenv("CORS_ALLOWED_ORIGINS", "")
+    origins = [origin.strip() for origin in configured.split(",") if origin.strip()]
+
+    # Local development defaults.
+    for local_origin in ["http://localhost:3000", "http://127.0.0.1:3000"]:
+        if local_origin not in origins:
+            origins.append(local_origin)
+
+    return origins
 
 
 def _to_output_relative(path: Optional[str]) -> Optional[str]:
@@ -345,10 +359,13 @@ app = FastAPI(title="ResearchMind API", version="1.0.0")
 
 app.mount("/output", StaticFiles(directory=_output_dir()), name="output")
 
+cors_allow_origin_regex = os.getenv("CORS_ALLOW_ORIGIN_REGEX", r"https://.*\.vercel\.app")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
-    allow_credentials=True,
+    allow_origins=_cors_allow_origins(),
+    allow_origin_regex=cors_allow_origin_regex,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

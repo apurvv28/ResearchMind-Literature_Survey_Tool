@@ -16,6 +16,7 @@ It combines:
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [Running the Project](#running-the-project)
+- [Deployment](#deployment)
 - [API Contract](#api-contract)
 - [Generated Outputs](#generated-outputs)
 - [Troubleshooting](#troubleshooting)
@@ -133,6 +134,21 @@ RESEARCHMIND_API_URL=http://127.0.0.1:8001
 
 If `RESEARCHMIND_API_URL` is not provided, the frontend defaults to `http://127.0.0.1:8001`.
 
+For production Vercel deployments, set:
+
+```env
+NEXT_PUBLIC_RESEARCHMIND_API_URL=https://your-render-service.onrender.com
+```
+
+For Render backend deployments, set:
+
+```env
+SERPER_API_KEY=your_serper_key
+GROQ_API_KEY=your_groq_key
+CORS_ALLOWED_ORIGINS=https://your-vercel-app.vercel.app
+CORS_ALLOW_ORIGIN_REGEX=https://.*\.vercel\.app
+```
+
 ## Running the Project
 
 Use two terminals.
@@ -153,6 +169,33 @@ npm run dev
 ```
 
 Open `http://localhost:3000`.
+
+## Deployment
+
+### Deploy backend (`researchmind`) to Render
+
+This repo includes [render.yaml](render.yaml), so you can create a Blueprint deployment directly.
+
+1. Push this repository to GitHub.
+2. In Render, create a new Blueprint and select this repository.
+3. Confirm the web service `researchmind-api` and set secret env vars:
+	- `SERPER_API_KEY`
+	- `GROQ_API_KEY`
+4. Deploy and copy the service URL (for example: `https://researchmind-api.onrender.com`).
+
+### Deploy frontend (`ai-research-assistant`) to Vercel
+
+1. Import the same repository in Vercel.
+2. Set the project root directory to `ai-research-assistant`.
+3. Add environment variable:
+	- `NEXT_PUBLIC_RESEARCHMIND_API_URL=https://your-render-service.onrender.com`
+4. Deploy.
+
+### Why this setup works
+
+- The frontend calls Render directly in production via `NEXT_PUBLIC_RESEARCHMIND_API_URL`.
+- This avoids long-running Vercel serverless proxy timeouts for research generation.
+- Backend CORS is configurable for both local development and Vercel domains.
 
 ## API Contract
 

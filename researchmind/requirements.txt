@@ -1,0 +1,10 @@
+crewai
+crewai-tools
+langchain
+python-dotenv
+pydantic
+langchain-groq
+litellm
+fastapi
+uvicorn
+pylatex

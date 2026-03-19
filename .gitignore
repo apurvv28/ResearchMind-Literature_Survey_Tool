@@ -1,0 +1,23 @@
+venv/
+.venv/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+
+# Environment files
+.env
+*.env
+!.env.example
+
+# Node/Next build artifacts
+node_modules/
+.next/
+
+# Generated reports and transient build files
+output/
+researchmind/output/
+*.aux
+*.log
+*.out
+*.pdf
